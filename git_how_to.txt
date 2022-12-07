@@ -1,0 +1,13 @@
+To clone and manage repo in new machine:
+> git clone https://github.com/USERNAME/REPOSITORY.git
+
+To submit new changes (branch is usually main):
+> git add <files>
+> git commit -m "Comment here"
+> git push origin <branch>
+
+To unstage file:
+> git reset HEAD <file>
+
+To get latest updates from repo
+> git pull

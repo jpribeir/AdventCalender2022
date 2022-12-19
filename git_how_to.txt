@@ -11,3 +11,6 @@ To unstage file:
 
 To get latest updates from repo
 > git pull
+
+To reset file from main
+> git checkout origin/master [filename]

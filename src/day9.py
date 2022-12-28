@@ -23,6 +23,24 @@ def part1():
             tail_travel_list.append(tail_pos)
     return tail_travel_list
 
+def checkNextKnot(current_knot,knot_list,dir):
+    if any(x>1 for x in list(map(lambda a,b: abs(a-b),knot_list[current_knot],knot_list[current_knot-1]))):
+        knot_list[current_knot] = list(map(lambda a,b: a-b,knot_list[current_knot],dir))
+        ##### STILL NOT SURE HERE
+
+def part2(num_knots):
+    knot_list = [[0,0]]*num_knots
+    tail_travel_list = [[0,0]]
+    for line in motion_list:
+        # Define next movement
+        dir = dir_dict[line.split(" ")[0]]
+        val = int(line.split(" ")[1])
+        
+        # Move head according do defined movement
+        knot_list[0] = list(map(lambda a,b: val*a+b,dir,knot_list[0]))
+        checkNextKnot(1,knot_list,dir)
+    return tail_travel_list
+
 # Read input file
 with open("../include/input9.inc","r") as motion_file:
     motion_list = list(map(lambda a: a.strip(),motion_file.readlines()))
@@ -33,3 +51,4 @@ dir_dict = {"R":[0,1],
             "D":[-1,0]}
 
 print("Part1: %s"%len(set(tuple(i) for i in part1())))
+print("Part2: %s"%len(set(tuple(i) for i in part2(10))))

@@ -23,28 +23,37 @@ def part1():
             tail_travel_list.append(tail_pos)
     return tail_travel_list
 
-def checkNextKnot(current_knot,knot_list,dir):
+def sign(num):
+    if num>0: return 1
+    elif num<0: return -1
+    else: return 0
+
+def moveNextKnot(current_knot,knot_list):
+    # If any coordinate is more than 1 spot from the previous knot, move it
     if any(x>1 for x in list(map(lambda a,b: abs(a-b),knot_list[current_knot],knot_list[current_knot-1]))):
-        knot_list[current_knot] = list(map(lambda a,b: a-b,knot_list[current_knot],dir))
-        ##### STILL NOT SURE HERE
+        aux_knot = knot_list[current_knot].copy()
+        for i in range(2): aux_knot[i] += sign(knot_list[current_knot-1][i] - knot_list[current_knot][i])
+        knot_list[current_knot] = aux_knot.copy()
+        
+        # If last knot add this spot to the travel list, otherwise move to next knot
+        if current_knot == len(knot_list)-1: tail_travel_list.append(knot_list[current_knot])
+        else: knot_list = moveNextKnot(current_knot+1,knot_list)
+    return knot_list
 
 def part2(num_knots):
     knot_list = [[0,0]]*num_knots
-    tail_travel_list = [[0,0]]
     for line in motion_list:
-        # Define next movement
-        dir = dir_dict[line.split(" ")[0]]
-        val = int(line.split(" ")[1])
-        
-        # Move head according do defined movement
-        knot_list[0] = list(map(lambda a,b: val*a+b,dir,knot_list[0]))
-        checkNextKnot(1,knot_list,dir)
+        # Move head and next knots accordingly, one step at a time
+        for _ in range(int(line.split(" ")[1])):
+            knot_list[0] = list(map(lambda a,b: a+b,dir_dict[line.split(" ")[0]],knot_list[0]))
+            knot_list = moveNextKnot(1,knot_list)
     return tail_travel_list
 
 # Read input file
 with open("../include/input9.inc","r") as motion_file:
     motion_list = list(map(lambda a: a.strip(),motion_file.readlines()))
 
+tail_travel_list = [[0,0]]
 dir_dict = {"R":[0,1],
             "L":[0,-1],
             "U":[1,0],

@@ -16,9 +16,11 @@ def checkCoord(initial_col,spot_count):
     else: return initial_col+1,spot_count
 
 # Read input file
+#with open("../include/example15.inc","r") as coords_file:
 with open("../include/input15.inc","r") as coords_file:
     coords_list = list(map(lambda a: a.strip(),coords_file.readlines()))
 
+#row_check = 10
 row_check = 2000000
 min_coords,max_coords = [0,0],[0,0]
 sensor_dict = {}
